@@ -3,7 +3,19 @@ import React from 'react'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { useNavigation } from '@react-navigation/native';
 const OrdersWishlist = () => {
+
+    const navigation = useNavigation()
+
+
+
+    const GoToWishList = () => {
+
+        navigation.navigate('WishList')
+
+    }
+
     return (
         <View style={{ marginTop: 10 }} >
             <TouchableOpacity style={styles.orders}>
@@ -23,7 +35,7 @@ const OrdersWishlist = () => {
                 </View>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.orders}>
+            <TouchableOpacity style={styles.orders} onPress={() => GoToWishList()}>
                 <View style={styles.orderIcon}>
                     <AntDesign name='hearto' size={25} color={'black'} />
                 </View>

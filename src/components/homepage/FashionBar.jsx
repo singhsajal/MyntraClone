@@ -1,6 +1,7 @@
 import { Text, View, StyleSheet, TouchableOpacity, ScrollView, FlatList, Image } from 'react-native'
 import React, { Component, useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
+import axios from 'axios'
 
 
 
@@ -14,16 +15,31 @@ const FashionBar = () => {
 
     useEffect(() => {
         GetMenProduct()
+        //console.log(MenProduct)
     }, [])
-    const GetMenProduct = () => {
-        fetch(`https://fakestoreapi.com/products/category/men's%20clothing`)
-            .then(res => res.json())
-            .then(json => SetMenProduct(json))
-    }
+    // const GetMenProduct = () => {
+    //     fetch(`https://dummyjson.com/products/category/mens-shirts`)
+    //         .then(res => res.json())
+    //         .then(json => SetMenProduct(json))
 
-    const GoToProductDetails = () => {
+    // }
 
-        // navigation.navigate('ProductDetails', { data:})
+
+    const GetMenProduct = async () => {
+        try {
+            const response = await axios.get('https://fakestoreapi.com/products/category/men\'s%20clothing');
+            //const response = await axios.get('https://dummyjson.com/products/category/mens-shirts');
+            //console.log("response", response.data)
+            SetMenProduct(response.data);
+        } catch (error) {
+            // console.error('Error fetching men\'s clothing products:', error);
+        }
+    };
+
+    const GoToProductDetails = (id) => {
+
+        navigation.navigate('ProductDetails', { id: id })
+
 
 
     }

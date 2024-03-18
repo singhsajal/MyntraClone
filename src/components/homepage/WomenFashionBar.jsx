@@ -1,9 +1,12 @@
 import { View, Text, StyleSheet, FlatList, ScrollView, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
 import { useState, useEffect } from 'react'
+import { useNavigation } from '@react-navigation/native'
+import axios from 'axios'
 
 const WomenFashionBar = () => {
     const arr = ["Kurta", "Sarees", "Dresses", "Sports", "Tops", "Jeans", "Purses"]
+    const navigation = useNavigation()
 
     const [WomenProduct, SetWomenProduct] = useState([])
 
@@ -11,15 +14,33 @@ const WomenFashionBar = () => {
         GetWomenProduct()
     }, [])
 
-    const GetWomenProduct = () => {
-        fetch(`https://fakestoreapi.com/products/category/women's%20clothing`)
-            .then(res => res.json())
-            .then(json => SetWomenProduct(json))
+    // const GetWomenProduct = () => {
+    //     fetch(`https://fakestoreapi.com/products/category/women's%20clothing`)
+    //         .then(res => res.json())
+    //         .then(json => SetWomenProduct(json))
+    // }
+
+    const GetWomenProduct = async () => {
+        try {
+            // const response = await axios.get('https://dummyjson.com/products/category/womens-dresses');
+            const response = await axios.get(`https://fakestoreapi.com/products/category/women's%20clothing`);
+            SetWomenProduct(response.data);
+        } catch (error) {
+            console.error('Error fetching women\'s clothing products:', error);
+        }
+    };
+
+    const GoToProductDetails = (id) => {
+
+        navigation.navigate('ProductDetails', { id: id })
+
+
+
     }
 
     const renderItem = ({ item }) => (
         <View style={styles.CategoryButton}>
-            <TouchableOpacity style={{ flexDirection: 'column' }}>
+            <TouchableOpacity style={{ flexDirection: 'column' }} onPress={() => GoToProductDetails(item.id)}>
                 <View style={{}}>
                     <Image source={{ uri: item.image }} style={styles.ImageArea} />
                 </View>
@@ -36,9 +57,13 @@ const WomenFashionBar = () => {
         <FlatList data={WomenProduct}
             renderItem={renderItem}
             keyExtractor={(item, index) => index.toString()}
+            showsHorizontalScrollIndicator={false}
             horizontal>
+                
+            </FlatList>
 
-        </FlatList>
+
+        
 
 
     )

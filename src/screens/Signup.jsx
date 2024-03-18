@@ -4,6 +4,7 @@ import { TextInput } from 'react-native-gesture-handler'
 import { useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios'
 
 const Signup = () => {
 
@@ -24,60 +25,103 @@ const Signup = () => {
         navigation.navigate('Login')
     }
 
-    const deleteUser = async (usernameToDelete) => {
-        try {
-            // Fetch existing users from local storage
-            const existingUsers = await AsyncStorage.getItem('users');
-            const users = existingUsers ? JSON.parse(existingUsers) : [];
+    // const deleteUser = async (usernameToDelete) => {
+    //     try {
+    //         // Fetch existing users from local storage
+    //         const existingUsers = await AsyncStorage.getItem('users');
+    //         const users = existingUsers ? JSON.parse(existingUsers) : [];
 
-            // Find the index of the user to delete
-            const userIndexToDelete = users.findIndex(user => user.username === usernameToDelete);
+    //         // Find the index of the user to delete
+    //         const userIndexToDelete = users.findIndex(user => user.username === usernameToDelete);
 
-            // If the user is found, remove it from the array
-            if (userIndexToDelete !== -1) {
-                users.splice(userIndexToDelete, 1);
+    //         // If the user is found, remove it from the array
+    //         if (userIndexToDelete !== -1) {
+    //             users.splice(userIndexToDelete, 1);
 
-                // Save the updated array back to local storage
-                await AsyncStorage.setItem('users', JSON.stringify(users));
+    //             // Save the updated array back to local storage
+    //             await AsyncStorage.setItem('users', JSON.stringify(users));
 
-                console.log(`User '${usernameToDelete}' deleted successfully`);
-                console.log('Updated users:', users);
-            } else {
-                console.log(`User '${usernameToDelete}' not found`);
-            }
-        } catch (error) {
-            console.error('Error deleting user:', error);
-        }
-    };
+    //             console.log(`User '${usernameToDelete}' deleted successfully`);
+    //             console.log('Updated users:', users);
+    //         } else {
+    //             console.log(`User '${usernameToDelete}' not found`);
+    //         }
+    //     } catch (error) {
+    //         console.error('Error deleting user:', error);
+    //     }
+    // };
 
-    const signUp = async (username, password) => {
+
+
+    const signUp = async (username, email, password, confirmPassword) => {
+
+
 
         if (SendData === false) {
+
+            //     console.log("Signup", username, email, password, confirmPassword)
+
+            //     try {
+            //         const result = await fetch('http://10.0.2.2:4500/signup', {
+            //             method: 'post',
+            //             body: JSON.stringify({ username, email, password, confirmPassword }),
+            //             headers: {
+            //                 'Content-Type': "application/json"
+            //             }
+            //         })
+            //     }
+            //     catch (error) {
+            //         console.error('Error:', error);
+            //     }
+
+
             try {
-                // Fetch existing users from local storage (if any)
-                const existingUsers = await AsyncStorage.getItem('users');
-                const users = existingUsers ? JSON.parse(existingUsers) : [];
+                console.log("try", username, email, password, confirmPassword)
+                const response = await axios.post('http://192.168.1.68:4500/signup', {
+                    username,
+                    email,
+                    password,
+                    confirmPassword
+                }, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
 
-                // Check if the username is already taken
-                const isUsernameTaken = users.some(user => user.username === username);
-                if (isUsernameTaken) {
-                    console.log('Username is already taken');
-                    return;
-                }
-
-                // Add the new user to the array
-                const newUser = { username, password };
-                users.push(newUser);
-
-                // Save the updated array back to local storage
-                await AsyncStorage.setItem('users', JSON.stringify(users));
-
-                console.log('User signed up successfully');
-                SetGoLogin(true)
-
+                // Handle response data if needed
+                console.log('Response:', response.data);
             } catch (error) {
-                console.error('Error signing up:', error);
+                // Handle error
+                console.error('Error:', error);
             }
+
+            // try {
+            //     // Fetch existing users from local storage (if any)
+            //     const existingUsers = await AsyncStorage.getItem('users');
+            //     const users = existingUsers ? JSON.parse(existingUsers) : [];
+
+            //     // Check if the username is already taken
+            //     const isUsernameTaken = users.some(user => user.username === username);
+            //     if (isUsernameTaken) {
+            //         console.log('Username is already taken');
+            //         return;
+            //     }
+
+            //     // Add the new user to the array
+            //     const newUser = { username, password };
+            //     users.push(newUser);
+
+            //     // Save the updated array back to local storage
+            //     await AsyncStorage.setItem('users', JSON.stringify(users));
+
+            //     console.log('User signed up successfully');
+            //     SetGoLogin(true)
+
+            // } catch (error) {
+            //     console.error('Error signing up:', error);
+            // }
+
+
         }
 
         else {
@@ -130,7 +174,7 @@ const Signup = () => {
             console.log(Password)
         }
 
-        signUp(Name, Password)
+        signUp(Name, Email, Password, Confirm)
         if (GoLogin == true) {
             GoToLoginPage()
 

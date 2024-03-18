@@ -2,6 +2,7 @@ import { Text, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-nati
 import React, { Component } from 'react'
 import { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
+import axios from 'axios'
 
 
 const CategoriesBar = () => {
@@ -15,23 +16,23 @@ const CategoriesBar = () => {
 
 
     const OpenMensProductList = () => {
-        console.log(MenProduct)
+        // console.log(MenProduct)
         navigation.navigate('ProductListing', { data: MenProduct });
     }
 
     const OpenWomensProductList = () => {
-        console.log(WomenProduct)
+        //console.log(WomenProduct)
         navigation.navigate('ProductListing', { data: WomenProduct });
     }
 
     const OpenHomeProductList = () => {
-        console.log(HomeProduct)
-        navigation.navigate('ProductListing', { data: HomeProduct });
+        //console.log(HomeProduct)
+        navigation.navigate('ProductListing', { data: BeautyProduct });
     }
 
     const OpenBeautyProductList = () => {
-        console.log(BeautyProduct)
-        navigation.navigate('ProductListing', { data: BeautyProduct });
+        //console.log(BeautyProduct)
+        navigation.navigate('ProductListing', { data: HomeProduct });
     }
 
 
@@ -42,28 +43,40 @@ const CategoriesBar = () => {
         GetBeautyProduct()
     }, [])
 
-    const GetMenProduct = () => {
-        fetch(`https://fakestoreapi.com/products/category/men's%20clothing`)
-            .then(res => res.json())
-            .then(json => SetMenProduct(json))
+    const GetMenProduct = async () => {
+        // fetch(`https://fakestoreapi.com/products/category/men's%20clothing`)
+        //     .then(res => res.json())
+        //     .then(json => SetMenProduct(json))
+        const response = await axios.get(`https://fakestoreapi.com/products/category/men's%20clothing`);
+
+        SetMenProduct(response.data)
     }
 
-    const GetWomenProduct = () => {
-        fetch(`https://fakestoreapi.com/products/category/women's%20clothing`)
-            .then(res => res.json())
-            .then(json => SetWomenProduct(json))
+    const GetWomenProduct = async () => {
+        // fetch(`https://fakestoreapi.com/products/category/women's%20clothing`)
+        //     .then(res => res.json())
+        //     .then(json => SetWomenProduct(json))
+        // const response = await axios.get('https://dummyjson.com/products/category/womens-dresses');
+        const response = await axios.get(`https://fakestoreapi.com/products/category/women's%20clothing`);
+        SetWomenProduct(response.data)
     }
 
-    const GetHomeProduct = () => {
-        fetch(`https://fakestoreapi.com/products/category/electronics`)
-            .then(res => res.json())
-            .then(json => SetBeaytyProduct(json))
+    const GetHomeProduct = async () => {
+        // fetch(`https://fakestoreapi.com/products/category/electronics`)
+        //     .then(res => res.json())
+        //     .then(json => SetBeaytyProduct(json))
+        // const response = await axios.get('https://dummyjson.com/products/category/furniture');
+        const response = await axios.get(`https://fakestoreapi.com/products/category/electronics`);
+        SetHomeProduct(response.data)
     }
 
-    const GetBeautyProduct = () => {
-        fetch(`https://fakestoreapi.com/products/category/jewelery`)
-            .then(res => res.json())
-            .then(json => SetHomeProduct(json))
+    const GetBeautyProduct = async () => {
+        // fetch(`https://fakestoreapi.com/products/category/jewelery`)
+        //     .then(res => res.json())
+        //     .then(json => SetHomeProduct(json))
+        // const response = await axios.get('https://dummyjson.com/products/category/womens-jewellery');
+        const response = await axios.get(`https://fakestoreapi.com/products/category/jewelery`);
+        SetBeaytyProduct(response.data)
     }
 
 
@@ -74,14 +87,14 @@ const CategoriesBar = () => {
         <View style={styles.main}>
 
             <View style={styles.CategoryButton}>
-                <TouchableOpacity onPress={() => OpenMensProductList()}>
+                <TouchableOpacity onPress={() => OpenMensProductList("33")}>
                     <Text style={styles.text}>Men</Text>
                 </TouchableOpacity>
             </View>
 
 
             <View style={styles.CategoryButton}>
-                <TouchableOpacity onPress={() => OpenWomensProductList()}>
+                <TouchableOpacity onPress={() => OpenWomensProductList("11")}>
                     <Text style={styles.text}>Women</Text>
                 </TouchableOpacity>
             </View>
@@ -119,13 +132,14 @@ const styles = StyleSheet.create({
     CategoryButton: {
         flex: 1,
         margin: 10,
-        borderColor: "blue",
-        backgroundColor: 'lightblue',
-        borderWidth: 2,
+        borderColor: "grey",
+        backgroundColor: 'white',
+        borderWidth: 1,
         height: 35,
-        borderRadius: 14,
+        borderRadius: 15,
         alignItems: "center",
         justifyContent: "center",
+
 
     }
 

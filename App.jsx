@@ -35,7 +35,7 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 //import { SearchBar } from 'react-native-elements';
 import { Searchbar, TextInput } from 'react-native-paper';
 import { Provider } from 'react-redux';
-//import store from './src/components/redux/store';
+
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Profile from './src/screens/Profile';
 import HomeScreen from './src/screens/HomeScreen';
@@ -43,6 +43,13 @@ import Signup from './src/screens/Signup';
 import Login from './src/screens/Login';
 import ProductListing from './src/screens/ProductListing';
 import ProductDetails from './src/screens/ProductDetails';
+import store from './src/components/redux/store';
+import Cart from './src/screens/Cart';
+import WishList from './src/screens/WishList';
+import SearchedProducts from './src/screens/SearchedProducts';
+
+
+
 
 
 
@@ -135,35 +142,52 @@ const MainTabs = () => (
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="MainTabs">
-        <Stack.Screen
-          name="MainTabs"
-          component={MainTabs}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Login"
-          component={Login}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Signup"
-          component={Signup}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="ProductListing"
-          component={ProductListing}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="ProductDetails"
-          component={ProductDetails}
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="MainTabs">
+          <Stack.Screen
+            name="MainTabs"
+            component={MainTabs}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Login"
+            component={Login}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Signup"
+            component={Signup}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ProductListing"
+            component={ProductListing}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ProductDetails"
+            component={ProductDetails}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Cart"
+            component={Cart}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="WishList"
+            component={WishList}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SearchedProducts"
+            component={SearchedProducts}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 };
 

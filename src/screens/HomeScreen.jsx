@@ -6,6 +6,7 @@ import CategoriesBar from '../components/homepage/CategoriesBar';
 import FashionBar from '../components/homepage/FashionBar';
 import WomenFashionBar from '../components/homepage/WomenFashionBar';
 import YourFavourites from '../components/homepage/YourFavourites';
+import BannerSlider from '../components/homepage/BannerSlider';
 
 
 const HomeScreen = () => {
@@ -16,11 +17,12 @@ const HomeScreen = () => {
         { key: 'categoriesBar', component: <CategoriesBar /> },
         { key: 'fashionBar', component: <FashionBar /> },
         { key: 'womenFashionBar', component: <WomenFashionBar /> },
+        { Key: 'BannerSlider', component: <BannerSlider /> },
         { key: 'yourFavourites', component: <YourFavourites /> },
     ];
 
     const renderItem = ({ item }) => (
-        <View key={item.key}>
+        <View key={item.key} >
             {item.component}
         </View>
     );
