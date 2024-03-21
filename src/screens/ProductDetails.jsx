@@ -5,11 +5,13 @@ import { ScrollView } from 'react-native-gesture-handler'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { RemoveFromCart } from '../components/redux/Actions'
+import { addToWishlist, removeFromWishlist } from '../store/slices/wishlistSLice'
+import { addItemToCart, removeFromCart } from '../store/slices/cartSlice'
 
 const ProductDetails = ({ route }) => {
 
-    const cart = useSelector(state => { console.log({ state }); return state?.Reducer });
-    const wishlist = useSelector(state => { console.log({ state }); return state?.Reducer2 });
+    const cart = useSelector(state => { console.log({ state }); return state?.cart.cart });
+    const wishlist = useSelector(state => { console.log({ state }); return state?.wishlist.wishlist });
     console.log("cart ", cart)
     console.log("Wishlist", wishlist)
 
@@ -72,7 +74,8 @@ const ProductDetails = ({ route }) => {
 
 
     const AddItem = () => {
-        Dispatch({ type: 'ADD_TO_CART', payload: Product });
+        // Dispatch({ type: 'ADD_TO_CART', payload: Product });
+        Dispatch(addItemToCart(Product));
         SetAddCartText(false)
 
     }
@@ -81,15 +84,18 @@ const ProductDetails = ({ route }) => {
 
     const RemoveItem = (Product) => {
 
-        Dispatch({ type: 'REMOVE_FROM_CART', payload: Product });
+        // Dispatch({ type: 'REMOVE_FROM_CART', payload: Product });
+        Dispatch(removeFromCart(Product));
         SetAddCartText(true)
     };
     const AddWishlist = () => {
-        Dispatch({ type: 'ADD_TO_WISHLIST', payload: Product })
+        // Dispatch({ type: 'ADD_TO_WISHLIST', payload: Product })
+        Dispatch(addToWishlist(Product))
         SetWishText(false)
     }
     const RemoveFromWishlist = (Product) => {
-        Dispatch({ type: 'REMOVE_FROM_WISHLIST', payload: Product })
+        // Dispatch({ type: 'REMOVE_FROM_WISHLIST', payload: Product })
+        Dispatch(removeFromWishlist(Product))
         SetWishText(true)
     }
 

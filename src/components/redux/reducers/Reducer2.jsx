@@ -1,28 +1,28 @@
-import {  ADD_TO_WISHLIST, REMOVE_FROM_WISHLIST } from "../ActionTypes";
+// import {  ADD_TO_WISHLIST, REMOVE_FROM_WISHLIST } from "../ActionTypes";
 
-// const initialState = {
-//     cart: [],
-// };
-const Reducer2 = (state = [], actions) => {
-    console.log("reducer", actions.payload)
-    switch (actions.type) {
+// // const initialState = {
+// //     cart: [],
+// // };
+// const Reducer2 = (state = [], actions) => {
+//     console.log("reducer", actions.payload)
+//     switch (actions.type) {
 
-        case ADD_TO_WISHLIST:
+//         case ADD_TO_WISHLIST:
 
-            return [...state, actions.payload]
+//             return [...state, actions.payload]
 
-        case REMOVE_FROM_WISHLIST:
+//         case REMOVE_FROM_WISHLIST:
 
-            const updatedWishlist = state.filter((item, index) => {
-                return item.id !== actions.payload.id;
-            })
-            console.log(" updated ", updatedWishlist)
-            return updatedWishlist
+//             const updatedWishlist = state.filter((item, index) => {
+//                 return item.id !== actions.payload.id;
+//             })
+//             console.log(" updated ", updatedWishlist)
+//             return updatedWishlist
 
-        default:
-            return state;
-    }
-}
+//         default:
+//             return state;
+//     }
+// }
 
 
-export default Reducer2
+// export default Reducer2

@@ -3,9 +3,18 @@ import React from 'react'
 import { useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useDispatch } from 'react-redux'
+import { setUserLoggedIn } from '../store/slices/loginSlice'
+import { setUserInfo } from '../store/slices/loginSlice'
+import { useSelector } from 'react-redux'
 
 const Login = () => {
 
+    const dispatch = useDispatch()
+    const isLoggedIn = useSelector(state => state?.login?.isLoggedIn);
+    console.log(isLoggedIn)
+    const userDetail = useSelector(state => state?.login?.userInfo)
+    console.log(userDetail)
     const navigation = useNavigation()
 
     const [Name, SetName] = useState('')
@@ -21,18 +30,32 @@ const Login = () => {
         navigation.navigate('HomeScreen')
     }
 
-    const login = async (username, password) => {
+    //-------------- login function to check the if the user is present in the local storage or not if yes then setislogin true and login ------
+
+    const login = async (name, password, email) => {
+        console.log("hello there")
+        //const  isLoggedIn = await useSelector(state => state?.login?.isLoggedIn);
+        console.log("logged in status", isLoggedIn)
         try {
             // Fetch existing users from local storage
             const existingUsers = await AsyncStorage.getItem('users');
             const users = existingUsers ? JSON.parse(existingUsers) : [];
+            console.log("users", users)
 
             // Check if the username and password match any stored user
-            const user = users.find(user => user.username === username && user.password === password);
+            const user = users.find(user => user.username === name && user.email === email);
+            console.log("user", name)
 
             if (user) {
+                console.log("inside user ", user)
+                dispatch(setUserLoggedIn("true"))
+                //let isLoggedIn = useSelector(state => state?.login?.isLoggedIn);
+                console.log(isLoggedIn)
+                dispatch(setUserInfo({ name, email }))
+                console.log(userDetail)
                 console.log('Login successful');
                 SetGoHome(true)
+                GoToHomePage()
             } else {
                 console.log('Invalid username or password');
                 SetInvalidError(true)
@@ -40,42 +63,91 @@ const Login = () => {
         } catch (error) {
             console.error('Error logging in:', error);
         }
-    };
+    }
+
+    //     try {
+    //         // Fetch existing users from local storage
+    //         const existingUsers = await AsyncStorage.getItem('users');
+    //         const users = existingUsers ? JSON.parse(existingUsers) : [];
+    //         console.log("users", users);
+
+    //         // Check if the username and password match any stored user
+    //         const user = users.find(user => user.username === username && user.password === password && user.email === email);
+    //         console.log("user", user);
+
+    //         if (user) {
+    //             console.log("inside user ", user);
+    //             dispatch(setUserLoggedIn(true));
+    //             dispatch(setUserInfo({ username, email }));
+    //             console.log('Login successful');
+    //             SetGoHome(true);
+    //         } else {
+    //             console.log('Invalid username or password');
+    //             SetInvalidError(true);
+    //         }
+    //     } catch (error) {
+    //         console.error('Error logging in:', error);
+    //     }
+
+    // };
+
+    // --------- validate that input field should not be empty------------------------------
 
     const ValidateInput = () => {
+        // console.log("name", Name)
+        // console.log("email", Email)
+        // console.log("password", Password)
         if (Name == '') {
             SetBadName(true)
 
-        }
-        else {
-            SetBadName(false)
-            console.log(Name)
-
-        }
-        if (Email == '') {
+        } else if (Email == '') {
             SetBadEmail(true)
-        }
-        else {
-            SetBadEmail(false)
-            console.log(Email)
-        }
-        if (Email == '') {
+        } else if (Password == '') {
             SetBadPassword(true)
-        }
-        else {
+        } else {
+            console.log("first")
+            SetBadEmail(false)
             SetBadPassword(false)
-            console.log(Password)
+            SetBadName(false)
+            login(Name, Password, Email);
         }
-        login(Name, Password)
+        // else {
+        //     SetBadName(false)
+        //     console.log({ Name })
 
-        if (GoHome == true) {
-            GoToHomePage()
+        // }
+        // if (Email == '') {
+        //     SetBadEmail(true)
+        // }
+        // else {
+        //     SetBadEmail(false)
+        //     console.log({ Email })
+        // }
+        // if (Email == '') {
+        //     SetBadPassword(true)
+        // }
+        // else {
+        //     SetBadPassword(false)
+        //     console.log({ Password })
+        // }
+        // // login(Name, Password, Email)
+        // if (Name !== '' && Email !== '' && Password !== '') {
+        //     // Call login function when all fields are filled
 
-        }
-        else {
-            SetGoHome(true)
-        }
+        //     login(Name, Password, Email);
+        // }
+
+        // if (GoHome == true) {
+        //     GoToHomePage()
+
+        // }
+        // else {
+        //     SetGoHome(true)
+        // }
+
     }
+
+    //-----------  navigate to signup page --------------------
 
     const GoToSignUpPage = () => {
         navigation.navigate('Signup')
@@ -89,23 +161,23 @@ const Login = () => {
                 <Text style={styles.loginText}>Login</Text>
 
                 <View style={styles.TextInput}>
-                    <TextInput placeholder='name' placeholderTextColor={"grey"} onChangeText={(text) => { SetName(text) }} style={styles.Text} ></TextInput>
+                    <TextInput placeholder='name' placeholderTextColor={"grey"} onChangeText={(text) => SetName(text)} style={styles.Text} ></TextInput>
                 </View>
                 {BadName === true && (<Text style={{ color: "red", marginRight: 140, marginTop: -7 }}>Please enter Name</Text>)}
 
                 <View style={styles.TextInput}>
-                    <TextInput placeholder='Email' placeholderTextColor={"grey"} onChangeText={(text) => { SetEmail(text) }} style={styles.Text} ></TextInput>
+                    <TextInput placeholder='Email' placeholderTextColor={"grey"} onChangeText={(text) => SetEmail(text)} style={styles.Text} ></TextInput>
                 </View>
                 {BadEmail === true && (<Text style={{ color: "red", marginRight: 140, marginTop: -7 }}>Please enter Email</Text>)}
 
                 <View style={styles.TextInput}>
-                    <TextInput placeholder='Password' placeholderTextColor={"grey"} onChangeText={(text) => { SetPassword(text) }} secureTextEntry={true} style={styles.Text} ></TextInput>
+                    <TextInput placeholder='Password' placeholderTextColor={"grey"} onChangeText={(text) => SetPassword(text)} secureTextEntry={true} style={styles.Text} ></TextInput>
                 </View>
                 {BadPassword === true && (<Text style={{ color: "red", marginRight: 140, marginTop: -7 }}>Please enter Password</Text>)}
 
                 {InvalidError === true && (<Text style={{ color: "red", marginRight: 140, marginTop: -7 }}>Invalid UserName or Password</Text>)}
                 <TouchableOpacity style={styles.Submit} onPress={() => ValidateInput()}>
-                    <Text style={{ color: "Black" }}> Submit</Text>
+                    <Text style={{ color: "white" }}> Submit</Text>
                 </TouchableOpacity>
 
 

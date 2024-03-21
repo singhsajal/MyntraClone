@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "766450424428",
+    "project_id": "myntraclonebackend",
+    "storage_bucket": "myntraclonebackend.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:766450424428:android:d8c9a9d22c473e2a945649",
+        "android_client_info": {
+          "package_name": "com.myntraclone"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXXJ5NavayEAxihBb9xu55nJBIUvNwJpc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

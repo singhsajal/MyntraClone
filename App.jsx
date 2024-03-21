@@ -43,10 +43,12 @@ import Signup from './src/screens/Signup';
 import Login from './src/screens/Login';
 import ProductListing from './src/screens/ProductListing';
 import ProductDetails from './src/screens/ProductDetails';
-import store from './src/components/redux/store';
+import store from './src/store/store';
 import Cart from './src/screens/Cart';
 import WishList from './src/screens/WishList';
 import SearchedProducts from './src/screens/SearchedProducts';
+import { setUserLoggedIn } from './src/store/slices/loginSlice';
+import { useSelector } from 'react-redux';
 
 
 
@@ -110,84 +112,106 @@ import SearchedProducts from './src/screens/SearchedProducts';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-const MainTabs = () => (
-  <Tab.Navigator>
-    <Tab.Screen
-      name="HomeScreen"
-      component={HomeScreen}
-      options={{
-        tabBarLabel: 'Home',
-        tabBarIcon: ({ size }) => (
-          <Image
-            source={require('./assets/icons/logo-myntra.png')} // Replace with the actual path to your home icon
-            style={{ width: size, height: size }}
-          />
-        ),
-        headerShown: false,
-      }}
-    />
-    <Tab.Screen
-      name="Profile"
-      component={Profile}
-      options={{
-        tabBarLabel: 'Profile',
-        tabBarIcon: () => (
-          <SimpleLineIcons name="user" size={20} color={'black'} />
-        ),
-        //headerShown: false
-      }}
-    />
-  </Tab.Navigator>
-);
+const MainTabs = () => {
+
+  const isLoggedIn = useSelector(state => state?.login?.isLoggedIn);
+
+  return (
+    <Tab.Navigator>
+      <Tab.Screen
+        name="HomeScreen"
+        component={HomeScreen}
+        options={{
+          tabBarLabel: 'Home',
+          tabBarIcon: ({ size }) => (
+            <Image
+              source={require('./assets/icons/logo-myntra.png')} // Replace with the actual path to your home icon
+              style={{ width: size, height: size }}
+            />
+          ),
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          tabBarLabel: 'Profile',
+          tabBarIcon: () => (
+            <SimpleLineIcons name="user" size={20} color={'black'} />
+          ),
+          //headerShown: false
+        }}
+      />
+    </Tab.Navigator>)
+};
 
 const App = () => {
+
+  const isLoggedIn = useSelector(state => state?.login?.isLoggedIn);
+
   return (
-    <Provider store={store}>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="MainTabs">
-          <Stack.Screen
-            name="MainTabs"
-            component={MainTabs}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Login"
-            component={Login}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Signup"
-            component={Signup}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="ProductListing"
-            component={ProductListing}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="ProductDetails"
-            component={ProductDetails}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Cart"
-            component={Cart}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="WishList"
-            component={WishList}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="SearchedProducts"
-            component={SearchedProducts}
-            options={{ headerShown: false }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </Provider>
+    <NavigationContainer>
+      {/* <Stack.Navigator initialRouteName={isLoggedIn ? "MainTabs" : "Login"}> */}
+      <Stack.Navigator>
+        {!isLoggedIn ?
+          <Stack.Group>
+            <Stack.Screen
+              name="Login"
+              component={Login}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Signup"
+              component={Signup}
+              options={{ headerShown: false }}
+            />
+          </Stack.Group> :
+          <Stack.Group>
+
+            <Stack.Screen
+              name="MainTabs"
+              component={MainTabs}
+              options={{ headerShown: false }}
+            />
+
+
+            <Stack.Screen
+              name="Signup"
+              component={Signup}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="ProductListing"
+              component={ProductListing}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="ProductDetails"
+              component={ProductDetails}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Cart"
+              component={Cart}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="WishList"
+              component={WishList}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="SearchedProducts"
+              component={SearchedProducts}
+              options={{ headerShown: false }}
+            />
+          </Stack.Group>
+
+        }
+
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 

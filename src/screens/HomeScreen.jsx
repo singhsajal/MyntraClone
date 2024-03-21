@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, FlatList } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import HomeHeader from '../components/homepage/HomeHeader';
 import SearchBar from '../components/homepage/SearchBar';
 import CategoriesBar from '../components/homepage/CategoriesBar';
@@ -7,9 +7,23 @@ import FashionBar from '../components/homepage/FashionBar';
 import WomenFashionBar from '../components/homepage/WomenFashionBar';
 import YourFavourites from '../components/homepage/YourFavourites';
 import BannerSlider from '../components/homepage/BannerSlider';
-
+import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 const HomeScreen = () => {
+
+    const navigation = useNavigation()
+    const isLoggedIn = useSelector(state => state?.login?.isLoggedIn);
+
+
+
+    useEffect(() => {
+        console.log(isLoggedIn)
+        //isLoggedIn && navigation.navigate('Login')
+        if (!isLoggedIn) {
+            navigation.navigate('Login');
+        }
+    })
 
     const sections = [
         { key: 'homeHeader', component: <HomeHeader /> },

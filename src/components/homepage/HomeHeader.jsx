@@ -10,8 +10,8 @@ import 'react-native-gesture-handler'
 
 const HomeHeader = () => {
 
-    const data = useSelector(state => { return state?.Reducer2 });
-    const data2 = useSelector(state => { return state?.Reducer });
+    const data = useSelector(state => { return state?.wishlist?.wishlist });
+    const data2 = useSelector(state => { return state?.cart?.cart });
 
     const navigation = useNavigation()
 

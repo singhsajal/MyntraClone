@@ -4,6 +4,8 @@ import { useNavigation } from '@react-navigation/native'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import RazorpayCheckout from 'react-native-razorpay';
+import { removeFromCart } from '../store/slices/cartSlice'
+import { addItemToCart } from '../store/slices/cartSlice'
 import { } from '@env'
 
 
@@ -12,8 +14,8 @@ const Cart = () => {
 
     const Dispatch = useDispatch();
 
-    const data = useSelector(state => { console.log({ state }); return state?.Reducer });
-    console.log("cartScreen ", data)
+    const data = useSelector(state => { console.log({ state }); return state?.cart.cart });
+    console.log("cartScreen ", data.cart)
 
     const navigation = useNavigation()
 
@@ -26,8 +28,8 @@ const Cart = () => {
     const RemoveFromCart = (data) => {
         console.log("data", data)
 
-        Dispatch({ type: 'REMOVE_FROM_CART', payload: data });
-
+        // Dispatch({ type: 'REMOVE_FROM_CART', payload: data });
+        Dispatch(removeFromCart(data));
     }
 
     const GetTotal = () => {

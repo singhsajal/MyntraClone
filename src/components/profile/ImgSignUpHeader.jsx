@@ -3,14 +3,25 @@ import React from 'react'
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
 import Signup from '../../screens/Signup';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { setUserLoggedIn } from '../../store/slices/loginSlice';
 
 const ImgSignUpHeader = () => {
 
     const navigation = useNavigation()
+    const isLoggedIn = useSelector(state => state?.login?.isLoggedIn);
+    const dispatch = useDispatch()
+
+
 
     const GoToSignUpLoginPage = () => {
 
+
+        console.log(isLoggedIn)
+        dispatch(setUserLoggedIn(false))
         navigation.navigate('Login')
+
 
     }
 
@@ -26,7 +37,7 @@ const ImgSignUpHeader = () => {
             <View style={styles.buttonBg} >
 
                 <TouchableOpacity style={styles.button} onPress={GoToSignUpLoginPage}>
-                    <Text>SignUp/Login</Text>
+                    {isLoggedIn ? <Text>Logout</Text> : <Text>Signup / Login</Text>}
                 </TouchableOpacity>
 
             </View>

@@ -4,13 +4,15 @@ import { useNavigation } from '@react-navigation/native'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import RazorpayCheckout from 'react-native-razorpay';
+import { removeFromWishlist } from '../store/slices/wishlistSLice'
+
 import { } from '@env'
 
 const WishList = () => {
     const Dispatch = useDispatch();
 
-    const data = useSelector(state => { console.log({ state }); return state?.Reducer2 });
-    // console.log("cartScreen ", data)
+    const data = useSelector(state => { console.log({ state }); return state?.wishlist?.wishlist });
+    console.log("Wishlist ", data)
 
     const navigation = useNavigation()
 
@@ -23,7 +25,8 @@ const WishList = () => {
     const RemoveFromCart = (data) => {
         //console.log("data", data)
 
-        Dispatch({ type: 'REMOVE_FROM_WISHLIST', payload: data });
+        // Dispatch({ type: 'REMOVE_FROM_WISHLIST', payload: data });
+        Dispatch(removeFromWishlist(data))
 
     }
 
@@ -34,7 +37,7 @@ const WishList = () => {
 
     const renderItem = ({ item }) => {
 
-        // console.log("hii", { item })
+        console.log("hii", { item })
 
 
         return (
